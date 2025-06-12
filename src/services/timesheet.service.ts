@@ -5,6 +5,7 @@ import {
 } from '../models/timesheet.model';
 import { User } from '../models/user.model';
 import { getActiveAttendanceScheduleService } from './attendanceSchedule.service';
+import { JwtPayload } from '../models/jwtPayload.model';
 
 export const getTimesheetsService = async () => {
   const timesheets = await Timesheet.findAll({
@@ -37,7 +38,15 @@ export const getTimesheetByIdService = async (id: number) => {
 
 export const createTimesheetService = async (
   data: TimesheetCreationAttributes,
+  jwtPayload?: JwtPayload
 ) => {
+  data.created_by = jwtPayload?.userId;
+  data.updated_by = jwtPayload?.userId;
+  if (jwtPayload?.userId === undefined) {
+    throw new Error('User ID is required to create a timesheet');
+  }
+  data.userId = jwtPayload.userId;
+
   // Check if today is not weekend
   const today = new Date();
   const dayOfWeek = today.getDay();
@@ -75,7 +84,11 @@ export const createTimesheetService = async (
 export const updateTimesheetService = async (
   id: number,
   data: TimesheetCreationAttributes,
+  jwtPayload?: JwtPayload
 ) => {
+
+  data.updated_by = jwtPayload?.userId;
+
   // Check if periode is active
   const activeSchedule = await getActiveAttendanceScheduleService();
   if (!activeSchedule) {

@@ -41,7 +41,7 @@ export const processPayroll = async (
 ) => {
   try {
     const periodeId = Number(req.params.periodeId);
-    const result = await processPayrollService(periodeId);
+    const result = await processPayrollService(periodeId, req.jwtPayload);
     res.status(200).json(result);
   } catch (error) {
     next(error);

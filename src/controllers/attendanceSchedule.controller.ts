@@ -39,7 +39,7 @@ export const createAttendanceSchedule = async (
   next: NextFunction,
 ) => {
   try {
-    const attendanceSchedule = await createAttendanceScheduleService(req.body);
+    const attendanceSchedule = await createAttendanceScheduleService(req.body, req.jwtPayload);
     res.status(201).json(attendanceSchedule);
   } catch (error) {
     next(error);
@@ -57,6 +57,7 @@ export const updateAttendanceSchedule = async (
     const attendanceSchedule = await updateAttendanceScheduleService(
       scheduleId,
       body,
+      req.jwtPayload,
     );
     res.status(200).json(attendanceSchedule);
   } catch (error) {

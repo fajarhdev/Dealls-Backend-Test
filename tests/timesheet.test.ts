@@ -1,5 +1,6 @@
 import { sequelize } from '../src/config/database.config';
 import { syncModels } from '../src/models';
+import { JwtPayload } from '../src/models/jwtPayload.model';
 import * as TimesheetService from '../src/services/timesheet.service';
 
 // Mock the attendance schedule service
@@ -108,10 +109,17 @@ describe('timesheet service', () => {
         hours: 8,
         isProcessed: false,
       };
+
+      // Mock JWT payload to simulate user authentication
+      const jwtPayload = { 
+        userId: 1,
+        username: 'testuser',
+        role: 1,
+       } as JwtPayload; // Simulate a JWT payload with user ID
       const createdTimesheet =
-        await TimesheetService.createTimesheetService(newTimesheet);
+        await TimesheetService.createTimesheetService(newTimesheet, jwtPayload);
       expect(createdTimesheet).toBeDefined();
-      expect(createdTimesheet.userId).toBe(newTimesheet.userId);
+      expect(createdTimesheet.userId).toBe(jwtPayload.userId);
       expect(createdTimesheet.periode).toBe(newTimesheet.periode);
       expect(createdTimesheet.hours).toBe(newTimesheet.hours);
     });

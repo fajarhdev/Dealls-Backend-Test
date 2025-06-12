@@ -41,7 +41,7 @@ export const createRole = async (
 ) => {
   try {
     const newRole = req.body;
-    const role = await createRoleService(newRole);
+    const role = await createRoleService(newRole, req.jwtPayload);
     res.status(201).json(role);
   } catch (error) {
     next(error);
@@ -56,7 +56,7 @@ export const updateRole = async (
   try {
     const roleId = req.params.id;
     const updatedRole = req.body;
-    const role = await updateRoleService(Number(roleId), updatedRole);
+    const role = await updateRoleService(Number(roleId), updatedRole, req.jwtPayload);
     res.status(200).json(role);
   } catch (error) {
     console.error('Error updating role:', error);

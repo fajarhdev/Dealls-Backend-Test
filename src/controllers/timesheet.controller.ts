@@ -85,7 +85,7 @@ export const createTimesheet = async (
   next: NextFunction,
 ) => {
   try {
-    const timesheet = await createTimesheetService(req.body);
+    const timesheet = await createTimesheetService(req.body, req.jwtPayload);
     res.status(201).json(timesheet);
   } catch (error) {
     next(error);
@@ -102,6 +102,7 @@ export const updateTimesheet = async (
     const updatedTimesheet = await updateTimesheetService(
       timesheetId,
       req.body,
+      req.jwtPayload
     );
     res.status(200).json(updatedTimesheet);
   } catch (error) {

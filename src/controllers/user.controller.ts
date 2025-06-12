@@ -40,7 +40,7 @@ export const createUser = async (
   next: NextFunction,
 ) => {
   try {
-    const user = await createUserService(req.body);
+    const user = await createUserService(req.body, req.jwtPayload);
     res.status(201).json(user);
   } catch (error) {
     next(error);
@@ -53,7 +53,7 @@ export const updateUser = async (
 ) => {
   try {
     const { id } = req.params;
-    const user = await updateUserService(Number(id), req.body);
+    const user = await updateUserService(Number(id), req.body, req.jwtPayload);
     res.status(200).json(user);
   } catch (error) {
     next(error);

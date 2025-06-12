@@ -1,3 +1,4 @@
+import { JwtPayload } from '../models/jwtPayload.model';
 import { UserCreationAttributes } from '../models/user.model';
 import { User } from '../models/user.model';
 
@@ -14,7 +15,11 @@ export const getUserByIdService = async (id: number) => {
   return user;
 };
 
-export const createUserService = async (data: UserCreationAttributes) => {
+export const createUserService = async (data: UserCreationAttributes, jwtPayload?: JwtPayload) => {
+
+  data.created_by = jwtPayload?.userId;
+  data.updated_by = jwtPayload?.userId;
+
   const user = await User.create(data);
   return user;
 };
@@ -22,7 +27,11 @@ export const createUserService = async (data: UserCreationAttributes) => {
 export const updateUserService = async (
   id: number,
   data: UserCreationAttributes,
+  jwtPayload?: JwtPayload,
 ) => {
+
+  data.updated_by = jwtPayload?.userId;
+
   const user = await getUserByIdService(id);
   return user.update(data);
 };

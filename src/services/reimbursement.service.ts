@@ -67,6 +67,11 @@ export const createReimbursementService = async (
 
   data.periodeId = activePeriode.id;
   data.userId = Number(jwtPayload?.userId);
+
+  // Set created_by and updated_by fields from jwtPayload
+  data.created_by = jwtPayload?.userId;
+  data.updated_by = jwtPayload?.userId;
+
   console.log('Creating reimbursement with data:', data);
   const reimbursement = await Reimbursement.create(data);
   return reimbursement;
@@ -75,6 +80,7 @@ export const createReimbursementService = async (
 export const updateReimbursementService = async (
   id: number,
   data: ReimbursementCreationAttributes,
+  jwtPayload?: JwtPayload,
 ) => {
   const reimbursement = await getReimbursementByIdService(id);
 
@@ -83,6 +89,8 @@ export const updateReimbursementService = async (
   if (activePeriode.id !== reimbursement.periodeId) {
     throw new Error('Cannot update reimbursement for a non-active periode');
   }
+
+  data.updated_by = jwtPayload?.userId;
   // Update the reimbursement
   return reimbursement.update(data);
 };

@@ -1,3 +1,4 @@
+import { JwtPayload } from '../models/jwtPayload.model';
 import { RoleCreationAttributes } from '../models/role.model';
 import { Role } from '../models/role.model';
 
@@ -14,7 +15,9 @@ export const getRoleByIdService = async (id: number) => {
   return role;
 };
 
-export const createRoleService = async (data: RoleCreationAttributes) => {
+export const createRoleService = async (data: RoleCreationAttributes, jwtPayload?: JwtPayload) => {
+  data.created_by = jwtPayload?.userId;
+  data.updated_by = jwtPayload?.userId;
   const role = await Role.create(data);
   return role;
 };
@@ -22,8 +25,10 @@ export const createRoleService = async (data: RoleCreationAttributes) => {
 export const updateRoleService = async (
   id: number,
   data: RoleCreationAttributes,
+  jwtPayload?: JwtPayload,
 ) => {
   const role = await getRoleByIdService(id);
+  data.updated_by = jwtPayload?.userId;
   return role.update(data);
 };
 

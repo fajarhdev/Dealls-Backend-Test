@@ -5,6 +5,7 @@ import { getUserByIdService, getUsersService } from './user.service';
 import { Reimbursement } from '../models/reimbursement.model';
 import { getReimbursementByUserIdAndPeriodeIdService } from './reimbursement.service';
 import { Op } from 'sequelize';
+import { JwtPayload } from '../models/jwtPayload.model';
 
 interface Payslip {
   userId: number;
@@ -42,7 +43,9 @@ interface ReimbursementData {
   status?: string;
 }
 
-export const processPayrollService = async (periodeId: number) => {
+export const processPayrollService = async (periodeId: number, jwtPayload?: JwtPayload) => {
+
+  const updateBy = jwtPayload?.userId;
   // Get the timesheet period
   const periode = await AttendanceSchedule.findOne({
     where: { id: periodeId, isActive: true },
@@ -93,7 +96,9 @@ export const processPayrollService = async (periodeId: number) => {
   }
 
   const updateAttendanceSchedule = await AttendanceSchedule.update(
-    { isActive: false },
+    { isActive: false,
+      updated_by: updateBy,
+     },
     { where: { id: periode.id } },
   );
 

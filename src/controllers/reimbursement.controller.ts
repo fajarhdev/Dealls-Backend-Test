@@ -79,6 +79,7 @@ export const updateReimbursement = async (
     const reimbursement = await updateReimbursementService(
       reimbursementId,
       req.body,
+      req.jwtPayload
     );
     res.status(200).json(reimbursement);
   } catch (error) {

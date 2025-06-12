@@ -3,10 +3,15 @@ import {
   AttendanceSchedule,
   AttendanceScheduleCreationAttributes,
 } from '../models/attendanceSchedule.model';
+import { JwtPayload } from '../models/jwtPayload.model';
 
 export const createAttendanceScheduleService = async (
   data: AttendanceScheduleCreationAttributes,
+  jwtPayload?: JwtPayload
 ) => {
+  data.created_by = jwtPayload?.userId;
+  data.updated_by = jwtPayload?.userId;
+
   // Check if there is an active attendance schedule
   const activeAttendanceSchedule = await AttendanceSchedule.findOne({
     where: { isActive: true },
@@ -52,7 +57,11 @@ export const getAllAttendanceSchedulesService = async () => {
 export const updateAttendanceScheduleService = async (
   id: number,
   data: AttendanceScheduleCreationAttributes,
+  jwtPayload?: JwtPayload
 ) => {
+
+  data.updated_by = jwtPayload?.userId;
+  
   // Get the attendance schedule by ID
   const attendanceSchedule = await AttendanceSchedule.findByPk(id);
 
