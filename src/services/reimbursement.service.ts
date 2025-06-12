@@ -1,3 +1,4 @@
+import { JwtPayload } from '../models/jwtPayload.model';
 import {
   Reimbursement,
   ReimbursementCreationAttributes,
@@ -56,6 +57,7 @@ export const getReimbursementByUserIdAndPeriodeIdService = async (
 
 export const createReimbursementService = async (
   data: ReimbursementCreationAttributes,
+  jwtPayload?: JwtPayload,
 ) => {
   // Check active periode
   const activePeriode = await getActiveAttendanceScheduleService();
@@ -64,7 +66,7 @@ export const createReimbursementService = async (
   }
 
   data.periodeId = activePeriode.id;
-  data.userId = Number(data.jwtPayload?.userId);
+  data.userId = Number(jwtPayload?.userId);
   console.log('Creating reimbursement with data:', data);
   const reimbursement = await Reimbursement.create(data);
   return reimbursement;
