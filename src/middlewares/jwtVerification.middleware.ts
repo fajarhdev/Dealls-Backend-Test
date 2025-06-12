@@ -7,6 +7,14 @@ declare global {
   namespace Express {
     interface Request {
       jwtPayload?: JwtPayload;
+      auditLog?: {
+        requestId: string;
+        method: string;
+        endpoint: string;
+        ip: string;
+        statusCode: number;
+        responseTime: number;
+      };
     }
   }
 }
