@@ -1,7 +1,7 @@
 import jwt, { JwtPayload } from 'jsonwebtoken';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
-const JWT_EXPIRES_IN = '1h'; // Token expiration time
+const JWT_EXPIRES_IN = '24h'; // Token expiration time
 
 /**
  * Generate a JWT token for authentication

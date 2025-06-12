@@ -62,7 +62,7 @@ export const createReimbursement = async (
   next: NextFunction,
 ) => {
   try {
-    const reimbursement = await createReimbursementService(req.body);
+    const reimbursement = await createReimbursementService(req.body, req.jwtPayload);
     res.status(201).json(reimbursement);
   } catch (error) {
     next(error);
