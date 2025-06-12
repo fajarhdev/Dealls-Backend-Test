@@ -9,8 +9,8 @@ import { jwtVerificationMiddleware } from '../middlewares/jwtVerification.middle
 
 const payrollRoute = Router();
 
-payrollRoute.get('/payslip/user/:id/:periodeId', jwtVerificationMiddleware, auditMiddleware, getPayslipByUserId);
-payrollRoute.get('/payslip/all/:periodeId', jwtVerificationMiddleware, auditMiddleware, getAllPayslips);
-payrollRoute.post('/payslip/process/:periodeId', jwtVerificationMiddleware, auditMiddleware, processPayroll);
+payrollRoute.get('/user/:id/:periodeId', jwtVerificationMiddleware, auditMiddleware, getPayslipByUserId);
+payrollRoute.get('/all/:periodeId', jwtVerificationMiddleware, auditMiddleware, getAllPayslips);
+payrollRoute.post('/process/:periodeId', jwtVerificationMiddleware, auditMiddleware, processPayroll);
 
 export default payrollRoute;
